@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TinyTuring – Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--bg:#FFF4CC;--card:#fff;--ink:#2B2D42;--mute:#6B6F85;--line:#EFE6D2;--panel:#E3F5FD;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1D2B;--card:#262939;--ink:#F5F3EC;--mute:#B0B4C8;--line:#3A3E52;--panel:#203847}}
+:root[data-theme="dark"]{--bg:#1B1D2B;--card:#262939;--ink:#F5F3EC;--mute:#B0B4C8;--line:#3A3E52;--panel:#203847}
+html,body{min-height:100%}
+body{margin:0;font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:1rem;
+background-image:radial-gradient(circle at 10% 15%,#8FD3F455 0 90px,transparent 91px),radial-gradient(circle at 92% 85%,#FF8A8055 0 120px,transparent 121px),radial-gradient(circle at 85% 8%,#A8E6CF66 0 70px,transparent 71px)}
+h1,h2,.logo{font-family:Fredoka,Poppins,sans-serif}
+.shell{background:var(--card);border-radius:2rem;box-shadow:0 12px 0 var(--line);border:2px solid var(--line);overflow:hidden;width:100%;max-width:56rem;display:grid}
+@media(min-width:768px){.shell{grid-template-columns:1fr 1fr}}
+.field{width:100%;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:.75rem 1.1rem;font:inherit;transition:border-color .2s,box-shadow .2s}
+.field:focus{outline:none;border-color:#8FD3F4;box-shadow:0 0 0 4px #8FD3F455}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:999px;font-weight:600;padding:.75rem 1.2rem;background:#FF8A80;color:#2B2D42;border:0;cursor:pointer;box-shadow:0 5px 0 #E8625A;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #E8625A}
+.btn:active{transform:translateY(5px);box-shadow:none}
+.btn-o{background:var(--card);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn-o:hover{box-shadow:0 2px 0 var(--line)}
+.tab-on{background:#FFD966;color:#2B2D42}
+:focus-visible{outline:3px solid #8FD3F4;outline-offset:2px}
+@keyframes float{50%{transform:translateY(-14px)}}
+@keyframes wave{50%{transform:rotate(12deg)}}
+.float{animation:float 4s ease-in-out infinite}
+.f2{animation-delay:-1.3s}.f3{animation-delay:-2.6s}
+.wave{animation:wave 1.6s ease-in-out infinite;display:inline-block;transform-origin:70% 70%}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+
+  <!-- Illustration side -->
+  <aside class="relative hidden md:flex flex-col items-center justify-center text-center p-8" style="background:var(--panel)">
+    <svg viewBox="0 0 300 260" class="w-full max-w-xs" role="img" aria-label="Colorful blocks and happy kids">
+      <circle cx="150" cy="130" r="115" fill="#FFD966"/>
+      <g class="float"><rect x="70" y="140" width="62" height="62" rx="13" fill="#FF8A80"/><text x="87" y="187" font-size="38" font-family="Fredoka" font-weight="700" fill="#2B2D42">A</text></g>
+      <g class="float f2"><rect x="138" y="140" width="62" height="62" rx="13" fill="#8FD3F4"/><text x="155" y="187" font-size="38" font-family="Fredoka" font-weight="700" fill="#2B2D42">B</text></g>
+      <g class="float f3"><rect x="104" y="72" width="62" height="62" rx="13" fill="#A8E6CF"/><text x="123" y="118" font-size="38" font-family="Fredoka" font-weight="700" fill="#2B2D42">1</text>
+        <circle cx="122" cy="96" r="0" fill="#2B2D42"/></g>
+      <circle cx="46" cy="170" r="30" fill="#FFE0BD"/><path d="M18 165 Q46 125 74 165 Q46 148 18 165Z" fill="#6B4226"/><circle cx="37" cy="172" r="3.5" fill="#2B2D42"/><circle cx="55" cy="172" r="3.5" fill="#2B2D42"/><path d="M37 183 Q46 192 55 183" stroke="#2B2D42" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="254" cy="170" r="30" fill="#C98F5E"/><path d="M224 160 Q254 120 284 160 Q254 144 224 160Z" fill="#2B2D42"/><circle cx="245" cy="172" r="3.5" fill="#2B2D42"/><circle cx="263" cy="172" r="3.5" fill="#2B2D42"/><path d="M245 183 Q254 192 263 183" stroke="#2B2D42" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <text x="40" y="70" font-size="28">⭐</text><text x="235" y="60" font-size="28">🚀</text><text x="215" y="115" font-size="22">🧩</text>
+    </svg>
+    <h2 class="text-2xl font-bold mt-4">Play. Learn. Grow.</h2>
+    <p class="text-sm mt-2 max-w-xs" style="color:var(--mute)">Save wishlists, track orders and get 10% off your first toy.</p>
+  </aside>
+
+  <!-- Form side -->
+  <section class="p-6 sm:p-10">
+    <a href="#" class="logo text-2xl font-bold flex items-center gap-2"><span class="w-10 h-10 rounded-xl grid place-items-center" style="background:#8FD3F4">🧠</span>Tiny<span style="color:#E8625A">Turing</span></a>
+
+    <h1 id="title" class="text-3xl font-bold mt-6">Welcome back! <span class="wave">👋</span></h1>
+    <p id="sub" class="text-sm mt-1" style="color:var(--mute)">Login to continue your little one's learning adventure.</p>
+
+    <div class="flex rounded-full p-1 mt-6" style="background:var(--bg)" role="tablist">
+      <button data-tab="login" role="tab" class="tab tab-on flex-1 rounded-full py-2 font-semibold transition">Login</button>
+      <button data-tab="signup" role="tab" class="tab flex-1 rounded-full py-2 font-semibold transition">Sign Up</button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mt-5">
+      <button type="button" class="btn btn-o text-sm"><b style="color:#4285F4">G</b> Google</button>
+      <button type="button" class="btn btn-o text-sm"><span aria-hidden="true"></span> Apple</button>
+    </div>
+
+    <div class="flex items-center gap-3 my-5 text-xs" style="color:var(--mute)"><span class="flex-1 h-px" style="background:var(--line)"></span>or use email / phone<span class="flex-1 h-px" style="background:var(--line)"></span></div>
+
+    <form id="form" class="space-y-3" novalidate>
+      <input id="name" class="field hidden" placeholder="👶 Parent's name" aria-label="Parent's name">
+      <input id="id" class="field" placeholder="📧 Email or phone number" aria-label="Email or phone number" autocomplete="username">
+      <div id="pwBox" class="relative">
+        <input id="pw" type="password" class="field pr-14" placeholder="🔒 Password" aria-label="Password" autocomplete="current-password">
+        <button type="button" id="eye" class="absolute right-4 top-1/2 -translate-y-1/2 text-lg" aria-label="Show password">👁️</button>
+      </div>
+      <div id="otpBox" class="hidden"><input id="otp" class="field" inputmode="numeric" maxlength="6" placeholder="🔢 Enter 6-digit OTP" aria-label="OTP"></div>
+
+      <div class="flex justify-between items-center text-sm">
+        <button type="button" id="mode" class="font-medium underline">Use OTP instead</button>
+        <a href="#" id="forgot" class="underline" style="color:var(--mute)">Forgot password?</a>
+      </div>
+
+      <button id="go" class="btn w-full text-lg">Login</button>
+      <p id="msg" class="text-sm text-center font-semibold min-h-[1.25rem]" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="text-xs text-center mt-2" style="color:var(--mute)">🛡️ Safe &amp; secure · Made for curious kids</p>
+  </section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let tab='login', otp=false;
+const msg=(t,ok=true)=>{const m=$('#msg');m.textContent=t;m.style.color=ok?'#2E9E73':'#E8625A'};
+
+function sync(){
+  const login=tab==='login';
+  $$('.tab').forEach(t=>t.classList.toggle('tab-on',t.dataset.tab===tab));
+  $('#title').innerHTML=login?'Welcome back! <span class="wave">👋</span>':'Join the fun! <span class="wave">🎉</span>';
+  $('#sub').textContent=login?"Login to continue your little one's learning adventure.":'Create an account and get 10% off your first order.';
+  $('#name').classList.toggle('hidden',login);
+  $('#forgot').classList.toggle('hidden',!login||otp);
+  $('#pwBox').classList.toggle('hidden',otp);
+  $('#otpBox').classList.toggle('hidden',!otp);
+  $('#pw').autocomplete=login?'current-password':'new-password';
+  $('#mode').textContent=otp?'Use password instead':'Use OTP instead';
+  $('#go').textContent=otp?'Send OTP':(login?'Login':'Create account');
+  msg('');
+}
+$$('.tab').forEach(t=>t.onclick=()=>{tab=t.dataset.tab;sync()});
+$('#mode').onclick=()=>{otp=!otp;sync()};
+$('#eye').onclick=()=>{const p=$('#pw');const show=p.type==='password';p.type=show?'text':'password';$('#eye').textContent=show?'🙈':'👁️'};
+
+$('#form').onsubmit=e=>{
+  e.preventDefault();
+  const id=$('#id').value.trim();
+  if(!id) return msg('Please enter your email or phone number.',false);
+  if(tab==='signup'&&!$('#name').value.trim()) return msg("Please enter the parent's name.",false);
+  if(!otp&&$('#pw').value.length<6) return msg('Password needs at least 6 characters.',false);
+  msg(otp?'OTP sent! Check your phone or email. ✨':(tab==='login'?'Welcome back! 🎉':'Account created! 🎉'));
+};
+</script>
+</body>
+</html>
