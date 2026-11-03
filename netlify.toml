@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Serve the store app for any unknown path instead of a "Page not found" error
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
