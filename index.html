@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tiny Turing – Learning Toys for Curious Kids</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1b1c2a;--panel:#262839;--panel2:#20303f;--line:#3a3d52;--text:#fff;--muted:#a9adc4;--yellow:#ffd966;--coral:#ff8a80;--mint:#a8e6cf;--sky:#8fd3f4;--ink:#262839;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f5f3fb;--panel:#fff;--panel2:#e4f1f5;--line:#d9d9e8;--text:#1f2033;--muted:#5d6079}}
+:root[data-theme="dark"]{--bg:#1b1c2a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Poppins,"Noto Sans Devanagari",system-ui,sans-serif;line-height:1.5;min-height:100%}
+h1,h2,h3,.logo{font-family:Fredoka,"Noto Sans Devanagari",Poppins,sans-serif;margin:0}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:2px solid var(--line)}
+.bar{display:flex;align-items:center;gap:12px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700}
+.logo i{width:38px;height:38px;border-radius:10px;background:var(--sky);display:grid;place-items:center;font-style:normal}
+.logo b{color:var(--coral)}
+.in{width:100%;height:46px;border-radius:23px;border:2px solid var(--line);background:var(--panel);padding:0 18px;font-size:14px}
+.bar .in{flex:1;min-width:0;height:44px}
+.ibtn{position:relative;min-width:44px;height:44px;border-radius:22px;border:2px solid var(--line);background:var(--panel);font-size:16px;padding:0 12px}
+.ibtn span{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--coral);color:var(--ink);font-size:11px;font-weight:600;display:grid;place-items:center}
+.cta,.btn2{border:0;border-radius:24px;font-weight:600;padding:12px 26px;display:inline-block;text-align:center}
+.cta{background:var(--coral);color:var(--ink);box-shadow:0 5px 0 #d9605a}
+.cta:active{transform:translateY(3px);box-shadow:0 2px 0 #d9605a}
+.btn2{background:var(--yellow);color:var(--ink);box-shadow:0 5px 0 #c9a73f}
+.ghost{background:none;border:2px solid var(--line);border-radius:24px;padding:10px 22px;font-weight:500}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;margin:24px 0;border-radius:28px;background:var(--panel2);box-shadow:0 8px 0 var(--line);overflow:hidden}
+.hero .t{padding:36px}
+.hero h1{font-size:clamp(28px,4.5vw,42px);line-height:1.1}
+.hero p{color:var(--muted);margin:10px 0 20px;max-width:36ch;font-size:14px}
+.sun{position:relative;display:grid;place-items:center;min-height:200px}
+.sun::before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:var(--yellow)}
+.blk{position:relative;display:flex;gap:8px;font-family:Fredoka;font-weight:700;font-size:30px;color:#262839}
+.blk span{width:62px;height:62px;border-radius:14px;display:grid;place-items:center}
+.perks{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-bottom:6px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:26px 0 16px}
+.filters h2{font-size:24px;margin-right:auto}
+.chip{border:2px solid var(--line);background:var(--panel);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+select{border:2px solid var(--line);background:var(--panel);border-radius:20px;padding:6px 12px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding-bottom:40px}
+.card{background:var(--panel);border-radius:22px;padding:12px;box-shadow:0 5px 0 var(--line)}
+.pic{position:relative;height:150px;border-radius:16px;display:grid;place-items:center;font-size:64px}
+.heart{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.8);font-size:18px;color:#9a9ab0}
+.heart[aria-pressed="true"]{color:#e5484d}
+.card h3{font-size:17px;margin:12px 4px 0}
+.muted{color:var(--muted);font-size:12px;margin:0 4px}
+.row{display:flex;justify-content:space-between;align-items:center;margin:10px 4px 2px;gap:8px}
+.price{font-weight:600}.price s{color:var(--muted);font-weight:400;font-size:12px;margin-left:4px}
+.add{border:0;border-radius:16px;background:var(--yellow);color:var(--ink);font-weight:600;font-size:13px;padding:7px 14px}
+.empty{grid-column:1/-1;color:var(--muted);text-align:center;padding:30px}
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:28px 0}
+
+.pd h1{font-size:34px}
+.tag{display:inline-block;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:2px 12px;font-size:12px;margin:0 6px 6px 0}
+.big{font-size:26px;font-weight:600;margin:12px 0}
+.panel{background:var(--panel);border-radius:22px;padding:20px;box-shadow:0 5px 0 var(--line)}
+.two{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin:24px 0 40px;align-items:start}
+.line{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:2px solid var(--line)}
+.line:last-child{border:0}
+.line .th{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-size:32px;flex:none}
+.line .nm{flex:1;min-width:0;font-weight:500}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:none}
+.sum div{display:flex;justify-content:space-between;padding:5px 0;font-size:14px}
+.sum .tot{font-weight:600;font-size:18px;border-top:2px solid var(--line);margin-top:6px;padding-top:10px}
+.form{display:grid;gap:12px}
+.form label{font-size:13px;color:var(--muted);display:grid;gap:4px}
+.form .in{height:44px;border-radius:14px}
+.auth{max-width:440px;margin:40px auto;text-align:center}
+.tabs{display:flex;background:#15161f;border-radius:26px;padding:4px;margin:16px 0}
+.tabs button{flex:1;border:0;background:none;border-radius:22px;padding:9px;font-weight:600;color:#fff}
+.tabs button[aria-pressed="true"]{background:var(--yellow);color:var(--ink)}
+.err{color:var(--coral);font-size:13px;min-height:20px;margin:0}
+.ok{font-size:64px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--yellow);color:var(--ink);padding:10px 20px;border-radius:22px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+#toast.on{opacity:1}
+footer{border-top:2px solid var(--line);color:var(--muted);font-size:12px;text-align:center;padding:18px}
+@media(max-width:720px){.hero,.pd,.two{grid-template-columns:1fr}.hero .t{padding:26px}.logo span{display:none}.pd .pic{height:220px;font-size:90px}}
+body.authpage header,body.authpage footer{display:none}
+.lg{max-width:900px;margin:5vh auto;display:grid;grid-template-columns:1fr 1fr;border-radius:30px;overflow:hidden;background:var(--panel);box-shadow:0 10px 0 var(--line)}
+.lgl{background:var(--panel2);padding:36px 24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.lgl h2{font-size:24px;margin-top:22px}
+.art{position:relative;width:300px;height:260px}
+.sunl{position:absolute;left:28px;top:0;width:246px;height:246px;border-radius:50%;background:var(--yellow)}
+.bk{position:absolute;width:66px;height:66px;border-radius:14px;display:grid;place-items:center;font:700 30px Fredoka;color:#262839}
+.face{position:absolute;width:64px;height:64px;border-radius:50%}
+.face::before{content:"";position:absolute;top:34px;left:18px;width:6px;height:6px;border-radius:50%;background:#262839;box-shadow:22px 0 #262839}
+.face::after{content:"";position:absolute;left:19px;top:40px;width:26px;height:12px;border:3px solid #262839;border-top:0;border-radius:0 0 26px 26px}
+.dec{position:absolute;font-size:30px}
+.lgr{padding:32px 36px}
+.lgr h1{font-size:30px;margin-top:22px}
+.soc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.soc .ghost{box-shadow:0 4px 0 var(--line);font-weight:600}
+.or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px;margin-bottom:14px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.fld{position:relative}
+.fld span{position:absolute;left:16px;top:11px;font-size:16px}
+.fld .in{padding-left:46px;padding-right:46px;height:50px;border-radius:25px}
+.eye{position:absolute;right:8px;top:6px;width:38px;height:38px;border:0;background:none;font-size:18px}
+.lnks{display:flex;justify-content:space-between;font-size:13px}
+.trust{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.trust span{background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:6px 14px;font-size:13px}
+@media(max-width:720px){.lg{grid-template-columns:1fr;margin:16px auto}.lgl{display:none}.lgr{padding:26px 20px}}
+.doc{max-width:760px;margin:28px auto}.doc h1{font-size:32px;margin-bottom:12px}.doc li{margin:8px 0}
+details{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}
+.tl{list-style:none;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:18px 0}
+.tl li{text-align:center;font-size:12px;padding-top:28px;position:relative;color:var(--muted)}
+.tl li::before{content:"";position:absolute;top:0;left:50%;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--line)}
+.tl li.on{color:var(--text)}.tl li.on::before{background:var(--mint)}.tl li.cur::before{background:var(--yellow);box-shadow:0 0 0 4px rgba(255,217,102,.35)}
+.st{display:inline-block;font-size:12px;font-weight:600;border-radius:12px;padding:2px 10px;color:#262839}.st.i{background:var(--mint)}.st.l{background:var(--yellow)}.st.o{background:var(--coral)}
+.rv{background:var(--panel);border-radius:16px;padding:12px 16px;margin:8px 0;box-shadow:0 3px 0 var(--line)}
+.fl{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-bottom:8px}.fl a{text-decoration:underline}
+#nv{position:absolute;right:16px;top:100%;background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:8px;min-width:210px;box-shadow:0 6px 0 var(--line)}
+#nv[hidden]{display:none}#nv a{display:block;padding:9px 14px;border-radius:10px}#nv a:hover,#nv a:focus-visible{background:var(--panel2)}
+button[disabled]{opacity:.5;cursor:not-allowed}textarea.in{height:auto;min-height:110px;border-radius:18px;padding:12px 18px;resize:vertical}
+.okm{color:var(--mint);font-size:13px;min-height:20px;margin:0}.empty .ok{font-size:48px}
+@media(max-width:720px){.bar{flex-wrap:wrap}.bar .in{order:9;flex-basis:100%}.tl{font-size:11px}}
+.tel{font-size:24px;font-weight:600;text-decoration:underline}.cbox{margin:16px 0}.cbox h3{margin-bottom:6px}.cbox p{margin:6px 0}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.pic svg{width:100%;height:100%}
+.pd .pic{height:340px;border-radius:28px;overflow:hidden}
+.thumbs{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
+.tb{width:78px;height:58px;border-radius:12px;border:2px solid var(--line);padding:0;overflow:hidden;font-size:12px;font-weight:600;background:var(--panel)}
+.tb svg{width:100%;height:100%}.tb[aria-pressed="true"]{border-color:var(--yellow);box-shadow:0 0 0 2px var(--yellow)}
+.tb.vb{width:auto;padding:0 14px}
+.vid{position:relative;height:340px;border-radius:28px;overflow:hidden;display:grid;place-items:center}
+.toy{font-size:110px;animation:bob 1.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(6deg)}}
+.caps{position:absolute;bottom:34px;left:0;right:0;height:26px;text-align:center}
+.caps span{position:absolute;left:0;right:0;opacity:0;font-weight:600;font-size:18px;color:#262839;animation:cap 9s infinite}
+.caps span:nth-child(2){animation-delay:3s}.caps span:nth-child(3){animation-delay:6s}
+@keyframes cap{0%{opacity:0}5%,30%{opacity:1}35%,100%{opacity:0}}
+.prog{position:absolute;bottom:0;left:0;right:0;height:6px;background:#0002}
+.prog i{display:block;height:100%;background:#262839;animation:pg 9s linear infinite}
+@keyframes pg{from{width:0}to{width:100%}}
+.vid.pz *{animation-play-state:paused!important}
+.lg{position:relative}.langs{position:absolute;top:14px;right:16px;display:flex;gap:6px;z-index:2}
+.bar .sel,#lang{width:auto;flex:none;height:44px;border-radius:22px}
+.tel{font-size:24px;font-weight:600;text-decoration:underline}.cbox{margin:16px 0}.cbox h3{margin-bottom:6px}.cbox p{margin:6px 0}
+@media(prefers-reduced-motion:reduce){.toy,.prog i{animation:none!important}.caps span:first-child{opacity:1;animation:none!important}}
+@media(max-width:720px){.pd .pic,.vid{height:240px}.langs{top:8px;right:10px}.lgr{padding-top:44px}}
+#bot{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:8}
+body.authpage #bot{display:none}
+.fab{width:58px;height:58px;border-radius:50%;border:0;background:var(--coral);color:#262839;font-size:26px;box-shadow:0 5px 0 #d9605a;float:right}
+.bw{position:absolute;right:0;bottom:72px;width:min(360px,calc(100vw - 32px));height:min(500px,calc(100vh - 150px));background:var(--panel);border:2px solid var(--line);border-radius:22px;box-shadow:0 8px 0 var(--line);display:flex;flex-direction:column;overflow:hidden}
+.bh{background:var(--yellow);color:#262839;font:600 17px Fredoka,"Noto Sans Devanagari",sans-serif;padding:12px 16px}
+.bm{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:88%;padding:8px 12px;border-radius:16px;font-size:14px;white-space:pre-wrap}
+.m.b{background:var(--panel2);align-self:flex-start;border-bottom-left-radius:4px}
+.m.u{background:var(--coral);color:#262839;align-self:flex-end;border-bottom-right-radius:4px}
+.bp{display:flex;gap:8px;align-items:center;background:var(--panel);border-radius:12px;padding:6px 8px;margin-top:6px;font-size:13px;white-space:normal}
+.bp a{flex:1;text-decoration:underline}
+.bp button{width:28px;height:28px;border-radius:50%;border:0;background:var(--yellow);color:#262839;font-weight:700}
+.bq{display:flex;gap:6px;overflow-x:auto;padding:6px 10px}
+.bq .chip{white-space:nowrap;flex:none;font-size:12px;padding:4px 10px}
+.bf{display:flex;gap:8px;padding:10px;border-top:2px solid var(--line)}
+.bf .in{height:42px;border-radius:21px;min-width:0}
+.bf .cta{padding:8px 16px;box-shadow:0 3px 0 #d9605a}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="logo" href="#/" aria-label="Tiny Turing"><i>🧠</i><span>Tiny <b>Turing</b></span></a>
+  <input class="in" id="q" type="search">
+  <select id="lang" aria-label="Language"><option value="en">English</option><option value="hi">हिन्दी</option><option value="mr">मराठी</option></select>
+  <button class="ibtn" id="wb">♥<span id="wc">0</span></button>
+  <button class="ibtn" id="cb">🛒<span id="cc">0</span></button>
+  <button class="ibtn" id="ab">👤</button>
+  <button class="ibtn" id="mb" aria-label="Menu" aria-expanded="false">☰</button>
+  <nav id="nv" hidden></nav>
+</div></header>
+<main class="wrap" id="app"></main>
+<footer id="ft"></footer>
+<div id="bot"></div>
+<div id="toast" role="status"></div>
+<script>
+var RAW=`search=Search toys|खिलौने खोजें|खेळणी शोधा
+saved=Saved toys|पसंदीदा खिलौने|आवडती खेळणी
+cart=Cart|कार्ट|कार्ट
+login=Login|लॉगिन|लॉगिन
+signup=Sign Up|साइन अप|साइन अप
+hero_h=Play. Learn. Grow.|खेलो. सीखो. बढ़ो.|खेळा. शिका. वाढा.
+hero_p=Hand-picked learning toys for ages 0 to 10. Use code WELCOME10 for 10% off.|0 से 10 साल के लिए चुने हुए लर्निंग खिलौने। WELCOME10 कोड से 10% छूट पाएँ।|0 ते 10 वर्षांसाठी निवडक शिकवणारी खेळणी. WELCOME10 कोडने 10% सूट मिळवा.
+shop=Shop toys|खिलौने देखें|खेळणी पहा
+all_toys=Learning toys|लर्निंग खिलौने|शिकवणारी खेळणी
+all_ages=All ages|सभी उम्र|सर्व वयोगट
+all_cats=All categories|सभी श्रेणियाँ|सर्व श्रेणी
+pop=Popular|लोकप्रिय|लोकप्रिय
+lo=Price: low to high|कीमत: कम से ज़्यादा|किंमत: कमी ते जास्त
+hi=Price: high to low|कीमत: ज़्यादा से कम|किंमत: जास्त ते कमी
+none=No toys match. Try another age group or search.|कोई खिलौना नहीं मिला। दूसरी उम्र या खोज आज़माएँ।|खेळणे सापडले नाही. दुसरा वयोगट किंवा शोध वापरा.
+ages=Ages|उम्र|वय
+add=Add|जोड़ें|जोडा
+addcart=Add to cart|कार्ट में जोड़ें|कार्टमध्ये जोडा
+buy=Buy now|अभी खरीदें|आता खरेदी करा
+save=Save|सेव करें|सेव्ह करा
+savedb=Saved|सेव हो गया|सेव्ह केले
+back=← All toys|← सभी खिलौने|← सर्व खेळणी
+off=off|छूट|सूट
+more=More toys you may like|और खिलौने जो पसंद आएँगे|आवडतील अशी आणखी खेळणी
+free=Free delivery over ₹999 · 7-day easy returns|₹999 से ऊपर मुफ़्त डिलीवरी · 7 दिन में वापसी|₹999 वरील मोफत डिलिव्हरी · 7 दिवसांत परतावा
+yt=Watch real videos on YouTube ↗|YouTube पर असली वीडियो देखें ↗|YouTube वर खरे व्हिडिओ पहा ↗
+st1=Open the box|डिब्बा खोलें|बॉक्स उघडा
+st2=Play together|साथ मिलकर खेलें|एकत्र खेळा
+st3=Learn something new|कुछ नया सीखें|काहीतरी नवीन शिका
+pause=❚❚ Pause / Play|❚❚ रोकें / चलाएँ|❚❚ थांबवा / चालवा
+vid=Preview video|प्रीव्यू वीडियो|प्रीव्ह्यू व्हिडिओ
+yourcart=Your cart|आपका कार्ट|तुमचा कार्ट
+empty=Your cart is empty|आपका कार्ट खाली है|तुमचा कार्ट रिकामा आहे
+browse=Browse toys|खिलौने देखें|खेळणी पहा
+coupon=Coupon code|कूपन कोड|कूपन कोड
+apply=Apply|लागू करें|लागू करा
+sub=Subtotal|उप-योग|उप-बेरीज
+deliv=Delivery|डिलीवरी|डिलिव्हरी
+freew=Free|मुफ़्त|मोफत
+total=Total|कुल|एकूण
+checkout=Checkout|चेकआउट|चेकआउट
+fname=Full name|पूरा नाम|पूर्ण नाव
+phone=Phone (10 digits)|फ़ोन (10 अंक)|फोन (10 अंक)
+addr=Address|पता|पत्ता
+pin=Pincode|पिनकोड|पिनकोड
+pay=Payment|भुगतान|पेमेंट
+p_upi=UPI|UPI|UPI
+p_card=Card|कार्ड|कार्ड
+p_cod=Cash on delivery|कैश ऑन डिलीवरी|कॅश ऑन डिलिव्हरी
+place=Place order|ऑर्डर करें|ऑर्डर द्या
+summary=Order summary|ऑर्डर सारांश|ऑर्डर सारांश
+placed=Order placed!|ऑर्डर हो गया!|ऑर्डर झाली!
+arrive=Arriving by|डिलीवरी की तारीख|पोहोचेल
+keep=Keep shopping|खरीदारी जारी रखें|खरेदी सुरू ठेवा
+vieworders=View orders|ऑर्डर देखें|ऑर्डर पहा
+orders=Your orders|आपके ऑर्डर|तुमच्या ऑर्डर
+noord=No orders yet.|अभी कोई ऑर्डर नहीं।|अजून ऑर्डर नाही.
+logout=Log out|लॉग आउट|लॉग आउट
+welcome=Welcome back! 👋|वापसी पर स्वागत है! 👋|पुन्हा स्वागत! 👋
+join=Join the fun! 🎈|मज़े में शामिल हों! 🎈|मजेत सहभागी व्हा! 🎈
+sub_login=Login to continue your little one's learning adventure.|अपने नन्हे बच्चे की सीखने की यात्रा जारी रखने के लिए लॉगिन करें।|तुमच्या लहानग्याचा शिकण्याचा प्रवास सुरू ठेवण्यासाठी लॉगिन करा.
+sub_su=Create an account to start your little one's learning adventure.|अपने नन्हे बच्चे की सीखने की यात्रा शुरू करने के लिए खाता बनाएँ।|तुमच्या लहानग्याचा शिकण्याचा प्रवास सुरू करण्यासाठी खाते तयार करा.
+left_p=Save wishlists, track orders and get 10% off your first toy.|विशलिस्ट सेव करें, ऑर्डर ट्रैक करें और पहले खिलौने पर 10% छूट पाएँ।|विशलिस्ट सेव्ह करा, ऑर्डर ट्रॅक करा आणि पहिल्या खेळण्यावर 10% सूट मिळवा.
+or=or use email / phone|या ईमेल / फ़ोन से|किंवा ईमेल / फोनने
+emailph=Email or phone number|ईमेल या फ़ोन नंबर|ईमेल किंवा फोन नंबर
+pw=Password (min 6)|पासवर्ड (कम से कम 6)|पासवर्ड (किमान 6)
+yname=Your name|आपका नाम|तुमचे नाव
+otpph=Enter OTP (demo: 1234)|OTP डालें (डेमो: 1234)|OTP टाका (डेमो: 1234)
+useotp=Use OTP instead|OTP से लॉगिन करें|OTP वापरा
+usepw=Use password instead|पासवर्ड से लॉगिन करें|पासवर्ड वापरा
+forgot=Forgot password?|पासवर्ड भूल गए?|पासवर्ड विसरलात?
+create=Create account|खाता बनाएँ|खाते तयार करा
+guest=Browse as guest|अतिथि के रूप में देखें|पाहुणा म्हणून पहा
+safe=Safe & secure · Made for curious kids|सुरक्षित · जिज्ञासु बच्चों के लिए|सुरक्षित · जिज्ञासू मुलांसाठी
+t1=🚚 Free delivery over ₹999|🚚 ₹999 से ऊपर मुफ़्त डिलीवरी|🚚 ₹999 वर मोफत डिलिव्हरी
+t2=🛡️ Child-safe materials|🛡️ बच्चों के लिए सुरक्षित सामग्री|🛡️ मुलांसाठी सुरक्षित साहित्य
+t3=↩️ 7-day returns|↩️ 7 दिन में वापसी|↩️ 7 दिवसांत परतावा
+t4=⭐ Picked with educators|⭐ शिक्षकों की पसंद|⭐ शिक्षकांची निवड
+c_Baby=Baby|बेबी|बेबी
+c_Blocks=Blocks|ब्लॉक्स|ब्लॉक्स
+c_Puzzles=Puzzles|पज़ल|कोडी
+c_Science=Science|विज्ञान|विज्ञान
+c_Creative=Creative|रचनात्मक|सर्जनशील
+tadd=Added to cart|कार्ट में जोड़ा गया|कार्टमध्ये जोडले
+tsv=Saved to wishlist|विशलिस्ट में सेव किया|विशलिस्टमध्ये सेव्ह केले
+trm=Removed from wishlist|विशलिस्ट से हटाया|विशलिस्टमधून काढले
+tok=10% off applied|10% छूट लागू हुई|10% सूट लागू झाली
+tbad=Invalid code|गलत कोड|चुकीचा कोड
+tlog=Please log in to place your order|ऑर्डर के लिए लॉगिन करें|ऑर्डरसाठी लॉगिन करा
+tout=Logged out|लॉग आउट हो गया|लॉग आउट झाले
+twel=Welcome|स्वागत है|स्वागत
+treset=Reset link sent (demo)|रीसेट लिंक भेजा गया (डेमो)|रीसेट लिंक पाठवली (डेमो)
+tenter=Enter your email or phone first|पहले ईमेल या फ़ोन डालें|आधी ईमेल किंवा फोन टाका
+e_ex=This account already exists. Please log in.|यह खाता पहले से है। कृपया लॉगिन करें।|हे खाते आधीच आहे. कृपया लॉगिन करा.
+e_bad=Wrong email/phone or password. New here? Choose Sign Up.|ईमेल/फ़ोन या पासवर्ड गलत है। नए हैं? साइन अप चुनें।|ईमेल/फोन किंवा पासवर्ड चुकीचा. नवीन आहात? साइन अप निवडा.
+e_otp=Wrong OTP. Use 1234 in this demo.|गलत OTP। इस डेमो में 1234 डालें।|चुकीचा OTP. या डेमोमध्ये 1234 टाका.
+k_motor=Motor skills|हाथ-आँख कौशल|हात-डोळा कौशल्य
+k_color=Colours|रंग|रंग
+k_sense=Senses|इंद्रियाँ|संवेदना
+k_letters=Letters|अक्षर|अक्षरे
+k_shapes=Shapes|आकार|आकार
+k_logic=Logic|तर्क|तर्क
+k_maths=Maths|गणित|गणित
+k_science=Science|विज्ञान|विज्ञान
+k_code=Coding|कोडिंग|कोडिंग
+k_memory=Memory|याददाश्त|स्मरणशक्ती
+k_music=Music|संगीत|संगीत
+k_lang=Language|भाषा|भाषा
+k_focus=Focus|एकाग्रता|एकाग्रता
+k_build=Building|निर्माण|बांधकाम
+k_geo=Geography|भूगोल|भूगोल
+k_art=Creativity|रचनात्मकता|सर्जनशीलता
+k_space=Space|अंतरिक्ष|अंतराळ
+k_write=Writing|लेखन|लेखन
+ph_h=Contact Number|संपर्क नंबर|संपर्क क्रमांक
+wa=Chat on WhatsApp|WhatsApp पर चैट करें|WhatsApp वर चॅट करा
+owner=Website owner|वेबसाइट के मालिक|वेबसाइट मालक
+ab_how=Learning through play: blocks, puzzles and experiments help children build language, counting, problem-solving and curiosity.|खेल के ज़रिए सीखना: ब्लॉक, पज़ल और प्रयोगों से बच्चों में भाषा, गिनती, समस्या सुलझाने की क्षमता और जिज्ञासा बढ़ती है।|खेळातून शिक्षण: ब्लॉक्स, कोडी व प्रयोगांमुळे मुलांमध्ये भाषा, मोजणी, समस्या सोडवणे व जिज्ञासा वाढते.
+ab_types=Toys for ages 0–10: baby sensory toys, building blocks, puzzles and logic games, art and music, and science and coding kits.|0–10 साल के खिलौने: बेबी सेंसरी खिलौने, बिल्डिंग ब्लॉक, पज़ल और लॉजिक गेम, कला-संगीत, साइंस और कोडिंग किट।|0–10 वर्षांसाठी खेळणी: बेबी सेन्सरी खेळणी, ब्लॉक्स, कोडी व तर्क खेळ, कला-संगीत, विज्ञान व कोडिंग किट.
+ab_val=Our values: curiosity, honest information, and respect for children and parents.|हमारे मूल्य: जिज्ञासा, ईमानदार जानकारी और बच्चों व माता-पिता का सम्मान।|आमची मूल्ये: जिज्ञासा, प्रामाणिक माहिती व मुले आणि पालकांचा आदर.
+e_name=Please enter your name (at least 2 letters).|कृपया अपना नाम डालें (कम से कम 2 अक्षर)।|कृपया तुमचे नाव टाका (किमान 2 अक्षरे).
+e_pw=Password must be at least 6 characters.|पासवर्ड कम से कम 6 अक्षर का होना चाहिए।|पासवर्ड किमान 6 अक्षरांचा असावा.
+e_noacc=No account found. Please sign up first.|खाता नहीं मिला। पहले साइन अप करें।|खाते सापडले नाही. आधी साइन अप करा.
+e_code=Wrong demo code. Use 1234.|गलत डेमो कोड। 1234 डालें।|चुकीचा डेमो कोड. 1234 टाका.
+tcreated=Account created! You are logged in.|खाता बन गया! आप लॉगिन हैं।|खाते तयार झाले! तुम्ही लॉगिन आहात.
+tresetok=Password changed (demo). Please log in.|पासवर्ड बदल गया (डेमो)। कृपया लॉगिन करें।|पासवर्ड बदलला (डेमो). कृपया लॉगिन करा.
+tsoc=Google/Apple sign-in needs a real backend and is not available in this demo.|Google/Apple साइन-इन के लिए असली बैकएंड चाहिए, यह इस डेमो में उपलब्ध नहीं है।|Google/Apple साइन-इनसाठी खरा बॅकएंड हवा, हे या डेमोमध्ये उपलब्ध नाही.
+reset_t=Reset password (demo)|पासवर्ड रीसेट (डेमो)|पासवर्ड रीसेट (डेमो)
+code=Demo code (use 1234)|डेमो कोड (1234 डालें)|डेमो कोड (1234 टाका)
+newpw=New password (min 6)|नया पासवर्ड (कम से कम 6)|नवीन पासवर्ड (किमान 6)
+reset_b=Reset password|पासवर्ड रीसेट करें|पासवर्ड रीसेट करा
+backlogin=← Back to login|← लॉगिन पर वापस|← लॉगिनकडे परत
+demoauth=Demo accounts are saved only in this browser, not on a server.|डेमो खाते सिर्फ़ इसी ब्राउज़र में सेव होते हैं, सर्वर पर नहीं।|डेमो खाती फक्त याच ब्राउझरमध्ये सेव्ह होतात, सर्व्हरवर नाही.
+m_home=Home|होम|मुख्यपृष्ठ
+m_wish=Wishlist|विशलिस्ट|विशलिस्ट
+m_orders=My orders|मेरे ऑर्डर|माझ्या ऑर्डर
+m_prof=My profile|मेरी प्रोफ़ाइल|माझी प्रोफाइल
+m_about=About us|हमारे बारे में|आमच्याबद्दल
+m_contact=Contact us|संपर्क करें|संपर्क
+m_faq=FAQ|सवाल-जवाब|प्रश्नोत्तरे
+m_priv=Privacy policy|गोपनीयता नीति|गोपनीयता धोरण
+m_terms=Terms & conditions|नियम और शर्तें|अटी व शर्ती
+s_in=In stock|स्टॉक में है|स्टॉकमध्ये आहे
+s_low=Only {n} left|सिर्फ़ {n} बचे हैं|फक्त {n} शिल्लक
+s_out=Out of stock|स्टॉक खत्म|स्टॉक संपला
+s_note=demo inventory|डेमो इन्वेंटरी|डेमो साठा
+rev=Customer reviews (sample data)|ग्राहक समीक्षाएँ (नमूना डेटा)|ग्राहक पुनरावलोकने (नमुना डेटा)
+rv1=My kid loves it and plays every day!|मेरा बच्चा इसे रोज़ खेलता है!|माझे मूल रोज खेळते!
+rv2=Good quality and easy to understand.|अच्छी क्वालिटी, समझने में आसान।|चांगली गुणवत्ता, समजायला सोपे.
+rv3=Great value. Teaches while playing.|पैसा वसूल। खेल-खेल में सीख।|पैसे वसूल. खेळता खेळता शिक्षण.
+acct=Account|खाता|खाते
+saveprof=Save changes|बदलाव सेव करें|बदल सेव्ह करा
+profok=Profile updated|प्रोफ़ाइल अपडेट हुई|प्रोफाइल अपडेट झाली
+wempty=No saved toys yet. Tap ♡ on any toy.|अभी कोई सेव खिलौना नहीं। किसी खिलौने पर ♡ दबाएँ।|अजून सेव्ह खेळणे नाही. कोणत्याही खेळण्यावर ♡ दाबा.
+oempty=No orders yet. Your first order gets 10% off!|अभी कोई ऑर्डर नहीं। पहले ऑर्डर पर 10% छूट!|अजून ऑर्डर नाही. पहिल्या ऑर्डरवर 10% सूट!
+recent=Recent orders|हाल के ऑर्डर|अलीकडील ऑर्डर
+st_0=Order placed|ऑर्डर मिला|ऑर्डर मिळाली
+st_1=Packed|पैक हो गया|पॅक झाली
+st_2=Shipped|भेज दिया गया|पाठवली
+st_3=Out for delivery|डिलीवरी के लिए निकला|डिलिव्हरीसाठी निघाली
+st_4=Delivered|डिलीवर हुआ|पोहोचली
+st_x=Cancelled|रद्द किया गया|रद्द केली
+simnote=Simulated status for this demo. It changes every few minutes.|यह डेमो के लिए नकली स्थिति है, कुछ मिनटों में बदलती है।|ही डेमोसाठी नमुना स्थिती आहे, काही मिनिटांत बदलते.
+cancel=Cancel order|ऑर्डर रद्द करें|ऑर्डर रद्द करा
+tdet=Order details|ऑर्डर विवरण|ऑर्डर तपशील
+odate=Order date|ऑर्डर की तारीख|ऑर्डरची तारीख
+view=Track|ट्रैक करें|ट्रॅक करा
+demopay=Demo checkout: no real payment is taken and no card details are collected.|डेमो चेकआउट: कोई असली भुगतान नहीं होता, कार्ड की जानकारी नहीं ली जाती।|डेमो चेकआउट: खरे पेमेंट होत नाही, कार्ड माहिती घेतली जात नाही.
+placing=Placing order…|ऑर्डर हो रहा है…|ऑर्डर होत आहे…
+demopw=Demo only. Never use a real password.|सिर्फ़ डेमो। असली पासवर्ड कभी न डालें।|फक्त डेमो. खरा पासवर्ड कधीही वापरू नका.
+e_id=Enter a valid email or 10-digit phone.|सही ईमेल या 10 अंकों का फ़ोन डालें।|योग्य ईमेल किंवा 10 अंकी फोन टाका.
+e_form=Check name, 10-digit phone, address (min 8 characters) and 6-digit pincode.|नाम, 10 अंकों का फ़ोन, पता (कम से कम 8 अक्षर) और 6 अंकों का पिनकोड जाँचें।|नाव, 10 अंकी फोन, पत्ता (किमान 8 अक्षरे) व 6 अंकी पिनकोड तपासा.
+c_title=Contact us|संपर्क करें|संपर्क
+c_email=Email|ईमेल|ईमेल
+c_subj=Subject|विषय|विषय
+c_msg=Message|संदेश|संदेश
+c_send=Send message|संदेश भेजें|संदेश पाठवा
+c_note=Demo form: your message is saved only on this device and is not emailed.|डेमो फ़ॉर्म: संदेश सिर्फ़ इसी डिवाइस पर सेव होता है, ईमेल नहीं होता।|डेमो फॉर्म: संदेश फक्त या डिव्हाइसवर सेव्ह होतो, ईमेल होत नाही.
+c_ok=Thanks! Your message was saved (demo).|धन्यवाद! आपका संदेश सेव हो गया (डेमो)।|धन्यवाद! तुमचा संदेश सेव्ह झाला (डेमो).
+c_err=Please fill all fields correctly (message at least 10 characters).|कृपया सभी फ़ील्ड सही भरें (संदेश कम से कम 10 अक्षर)।|कृपया सर्व फील्ड बरोबर भरा (संदेश किमान 10 अक्षरे).
+ab_t=About Tiny Turing|टिनी ट्यूरिंग के बारे में|टिनी ट्युरिंगबद्दल
+ab_1=Tiny Turing is a kids' learning toy store. We believe children learn best when they play.|टिनी ट्यूरिंग बच्चों के लर्निंग खिलौनों की दुकान है। हमारा मानना है कि बच्चे खेलते-खेलते सबसे अच्छा सीखते हैं।|टिनी ट्युरिंग हे मुलांच्या शिकवणाऱ्या खेळण्यांचे दुकान आहे. मुले खेळता खेळता उत्तम शिकतात असे आम्ही मानतो.
+ab_2=Our mission: make letters, numbers, logic and science fun for every child from age 0 to 10.|हमारा मिशन: 0 से 10 साल के हर बच्चे के लिए अक्षर, गिनती, तर्क और विज्ञान को मज़ेदार बनाना।|आमचे ध्येय: 0 ते 10 वर्षांच्या प्रत्येक मुलासाठी अक्षरे, संख्या, तर्क व विज्ञान मजेदार करणे.
+ab_3=This website is a prototype demo. Products, reviews and stock are sample data.|यह वेबसाइट एक प्रोटोटाइप डेमो है। उत्पाद, समीक्षाएँ और स्टॉक नमूना डेटा हैं।|ही वेबसाइट प्रोटोटाइप डेमो आहे. उत्पादने, पुनरावलोकने व साठा नमुना डेटा आहे.
+faq_t=Frequently asked questions|अक्सर पूछे जाने वाले सवाल|वारंवार विचारले जाणारे प्रश्न
+q1=Which age is right for a toy?|खिलौने के लिए सही उम्र कौन सी है?|खेळण्यासाठी योग्य वय कोणते?
+a1=Each toy shows an age group (0–2, 3–5, 6+). Choose by your child's age.|हर खिलौने पर उम्र वर्ग (0–2, 3–5, 6+) लिखा है। बच्चे की उम्र के हिसाब से चुनें।|प्रत्येक खेळण्यावर वयोगट (0–2, 3–5, 6+) दिला आहे. मुलाच्या वयानुसार निवडा.
+q2=Are the toys safe?|क्या खिलौने सुरक्षित हैं?|खेळणी सुरक्षित आहेत का?
+a2=We aim for child-safe materials. Check each label and supervise young children. (Demo store: safety claims are not certified.)|हम बच्चों के लिए सुरक्षित सामग्री का लक्ष्य रखते हैं। लेबल देखें और छोटे बच्चों पर नज़र रखें। (डेमो स्टोर: सुरक्षा दावे प्रमाणित नहीं हैं।)|आम्ही मुलांसाठी सुरक्षित साहित्याचे ध्येय ठेवतो. लेबल पहा व लहान मुलांवर लक्ष ठेवा. (डेमो स्टोअर: सुरक्षा दावे प्रमाणित नाहीत.)
+q3=How do I place an order?|ऑर्डर कैसे करें?|ऑर्डर कशी द्यावी?
+a3=Add toys to the cart, log in, enter delivery details and place the order.|खिलौने कार्ट में जोड़ें, लॉगिन करें, डिलीवरी की जानकारी भरें और ऑर्डर करें।|खेळणी कार्टमध्ये जोडा, लॉगिन करा, डिलिव्हरी माहिती भरा व ऑर्डर द्या.
+q4=Which payment methods work?|कौन से भुगतान तरीके हैं?|कोणत्या पेमेंट पद्धती आहेत?
+a4=UPI, card and Cash on Delivery are shown. In this demo no real payment happens.|UPI, कार्ड और कैश ऑन डिलीवरी दिखते हैं। इस डेमो में असली भुगतान नहीं होता।|UPI, कार्ड व कॅश ऑन डिलिव्हरी दिसतात. या डेमोमध्ये खरे पेमेंट होत नाही.
+q5=How long is delivery?|डिलीवरी में कितना समय लगता है?|डिलिव्हरीला किती वेळ लागतो?
+a5=About 4 days. Free over ₹999, otherwise ₹49.|लगभग 4 दिन। ₹999 से ऊपर मुफ़्त, वरना ₹49।|सुमारे 4 दिवस. ₹999 वर मोफत, अन्यथा ₹49.
+q6=Can I cancel an order?|क्या ऑर्डर रद्द कर सकते हैं?|ऑर्डर रद्द करता येते का?
+a6=Yes, before it is shipped, from the order's tracking page.|हाँ, भेजने से पहले, ऑर्डर के ट्रैकिंग पेज से।|होय, पाठवण्यापूर्वी, ऑर्डरच्या ट्रॅकिंग पानावरून.
+q7=What is the return policy?|वापसी की नीति क्या है?|परतावा धोरण काय आहे?
+a7=Return unused toys within 7 days of delivery.|डिलीवरी के 7 दिन में बिना इस्तेमाल खिलौने वापस करें।|डिलिव्हरीनंतर 7 दिवसांत न वापरलेली खेळणी परत करा.
+bot_title=Tiny Helper|टिनी हेल्पर|टिनी हेल्पर
+bot_hi=Hi! I'm Tiny Helper 🧠 Tell me your child's age and I'll suggest toys.|नमस्ते! मैं टिनी हेल्पर हूँ 🧠 बच्चे की उम्र बताइए, मैं खिलौने सुझाऊँगा।|नमस्कार! मी टिनी हेल्पर 🧠 मुलाचे वय सांगा, मी खेळणी सुचवतो.
+bot_ph=Type your question…|अपना सवाल लिखें…|तुमचा प्रश्न लिहा…
+bot_send=Send|भेजें|पाठवा
+bot_q1=Toys for 3 year old|3 साल के लिए खिलौने|3 वर्षांसाठी खेळणी
+bot_q2=Under ₹500|₹500 से कम|₹500 पेक्षा कमी
+bot_q3=Delivery & returns|डिलीवरी और वापसी|डिलिव्हरी व परतावा
+bot_q4=Coupon code|कूपन कोड|कूपन कोड
+bot_q5=Track my order|मेरा ऑर्डर ट्रैक करें|माझी ऑर्डर ट्रॅक करा
+bot_think=Thinking…|सोच रहा हूँ…|विचार करत आहे…
+bot_deliv=Delivery is free over ₹999 (else ₹49) and takes about 4 days. You can return any toy within 7 days.|₹999 से ऊपर डिलीवरी मुफ़्त है (वरना ₹49), लगभग 4 दिन लगते हैं। 7 दिन में कोई भी खिलौना वापस कर सकते हैं।|₹999 वरील डिलिव्हरी मोफत (अन्यथा ₹49), सुमारे 4 दिवस लागतात. 7 दिवसांत कोणतेही खेळणे परत करता येते.
+bot_coup=Use code WELCOME10 at the cart for 10% off.|कार्ट में WELCOME10 कोड डालें और 10% छूट पाएँ।|कार्टमध्ये WELCOME10 कोड टाका आणि 10% सूट मिळवा.
+bot_pay=We accept UPI, cards and cash on delivery.|हम UPI, कार्ड और कैश ऑन डिलीवरी लेते हैं।|आम्ही UPI, कार्ड व कॅश ऑन डिलिव्हरी स्वीकारतो.
+bot_ord0=You have no orders yet.|आपका अभी कोई ऑर्डर नहीं है।|तुमची अजून ऑर्डर नाही.
+bot_ord=Your latest order|आपका ताज़ा ऑर्डर|तुमची ताजी ऑर्डर
+bot_rec=Here are some toys I picked for you:|ये रहे आपके लिए चुने हुए खिलौने:|तुमच्यासाठी निवडलेली खेळणी:
+bot_none=No exact match, so here are popular picks:|सटीक मेल नहीं मिला, ये लोकप्रिय विकल्प देखें:|अचूक जुळणी नाही, ही लोकप्रिय खेळणी पहा:
+bot_fb=I can help with toy ideas by age or budget, delivery, returns, coupons and orders. Try "toys for 5 year old".|मैं उम्र या बजट के हिसाब से खिलौने, डिलीवरी, वापसी, कूपन और ऑर्डर में मदद कर सकता हूँ। "5 साल के लिए खिलौने" पूछकर देखें।|मी वय/बजेटनुसार खेळणी, डिलिव्हरी, परतावा, कूपन व ऑर्डरमध्ये मदत करू शकतो. "5 वर्षांसाठी खेळणी" असे विचारा.
+bot_greet=Hello! How can I help you today?|नमस्ते! मैं आपकी कैसे मदद कर सकता हूँ?|नमस्कार! मी तुम्हाला कशी मदत करू?`;
+var TOYS=`1;🧸;0-2;Baby;399;499;c;motor,color;Stacking Rings|स्टैकिंग रिंग्स|स्टॅकिंग रिंग्ज;Rainbow rings for hand-eye skills|रंगीन रिंग्स से हाथ-आँख का तालमेल|रंगीत रिंग्सनी हात-डोळ्यांचा समन्वय
+2;🔔;0-2;Baby;299;399;m;sense,motor;Rattle & Teether Set|झुनझुना और टीदर सेट|खुळखुळा आणि टीदर सेट;Safe sounds and textures for tiny hands|नन्हे हाथों के लिए सुरक्षित आवाज़ और बनावट|लहान हातांसाठी सुरक्षित आवाज आणि पोत
+3;⚽;0-2;Baby;449;549;s;sense,color;Soft Sensory Balls|सॉफ्ट सेंसरी बॉल्स|सॉफ्ट सेन्सरी बॉल्स;Squishy balls for touch and play|छूने और खेलने के लिए नरम गेंदें|स्पर्श व खेळासाठी मऊ चेंडू
+4;🔤;0-2;Blocks;649;799;s;letters,build;Wooden ABC Blocks|लकड़ी के ABC ब्लॉक|लाकडी ABC ब्लॉक्स;28 blocks with letters and pictures|अक्षरों और चित्रों वाले 28 ब्लॉक|अक्षरे व चित्रे असलेले 28 ब्लॉक्स
+5;🎵;0-2;Creative;499;649;y;music,sense;Baby Xylophone|बेबी जाइलोफोन|बेबी झायलोफोन;Tap the bars and learn sounds|बार बजाकर सुर सीखें|पट्ट्या वाजवून सूर शिका
+6;🔷;3-5;Puzzles;549;699;y;shapes,logic;Shape Sorter Cube|शेप सॉर्टर क्यूब|शेप सॉर्टर क्यूब;Match 12 shapes to the right holes|12 आकारों को सही छेद में लगाएँ|12 आकार योग्य छिद्रात बसवा
+7;🧩;3-5;Puzzles;699;899;m;geo,focus;Jumbo Floor Puzzle|जंबो फ़्लोर पज़ल|जंबो फ्लोअर पझल;48 big pieces form a world map|48 बड़े टुकड़ों से बनता है दुनिया का नक्शा|48 मोठ्या तुकड्यांनी जगाचा नकाशा
+8;🚂;3-5;Blocks;849;999;c;maths,build;Number Train|नंबर ट्रेन|नंबर ट्रेन;Count and add with 10 carriages|10 डिब्बों से गिनती और जोड़|10 डब्यांनी मोजणी व बेरीज
+9;🧲;3-5;Blocks;799;999;s;letters,lang;Magnetic Letters Board|मैग्नेटिक अक्षर बोर्ड|चुंबकीय अक्षर फलक;Spell first words with 78 letters|78 अक्षरों से पहले शब्द बनाएँ|78 अक्षरांनी पहिले शब्द बनवा
+10;🍳;3-5;Creative;1299;1599;c;lang,art;Play Kitchen Set|प्ले किचन सेट|प्ले किचन सेट;Pretend cooking builds language|नकली खाना पकाकर भाषा सीखें|खोटा स्वयंपाक करून भाषा शिका
+11;🎨;3-5;Creative;349;449;y;art,color;Colour Clay Pack|रंगीन क्ले पैक|रंगीत क्ले पॅक;10 soft clay colours to shape ideas|10 नरम रंगों से आकृतियाँ बनाएँ|10 मऊ रंगांनी आकार बनवा
+12;✏️;3-5;Creative;399;499;m;write,letters;Alphabet Tracing Board|अक्षर ट्रेसिंग बोर्ड|अक्षर ट्रेसिंग फलक;Trace letters and practise writing|अक्षर बनाकर लिखना सीखें|अक्षरे गिरवून लेखन शिका
+13;🤖;6+;Science;1499;1899;s;code,build;Mini Robot Kit|मिनी रोबोट किट|मिनी रोबोट किट;Build and code a walking robot|चलने वाला रोबोट बनाएँ और कोड करें|चालणारा रोबोट बनवा व कोड करा
+14;🚀;6+;Science;1199;1499;y;space,build;Space Rocket Builder|स्पेस रॉकेट बिल्डर|स्पेस रॉकेट बिल्डर;120 pieces to launch your own rocket|120 टुकड़ों से अपना रॉकेट बनाएँ|120 तुकड्यांनी स्वतःचे रॉकेट
+15;🧪;6+;Science;1299;1599;m;science,focus;Junior Chemistry Lab|जूनियर केमिस्ट्री लैब|ज्युनियर केमिस्ट्री लॅब;20 safe fizzy experiments|20 सुरक्षित प्रयोग|20 सुरक्षित प्रयोग
+16;☀️;6+;Science;999;1299;y;science,build;Solar Science Kit|सोलर साइंस किट|सोलर सायन्स किट;Power a car with sunlight|धूप से कार चलाएँ|सूर्यप्रकाशाने गाडी चालवा
+17;🔬;6+;Science;1799;2299;s;science,focus;Microscope for Kids|बच्चों का माइक्रोस्कोप|मुलांचा सूक्ष्मदर्शक;See leaves, insects and water drops up close|पत्तियाँ, कीड़े और पानी की बूँदें पास से देखें|पाने, कीटक व पाण्याचे थेंब जवळून पाहा
+18;♟️;6+;Puzzles;899;1099;c;logic,focus;Chess for Beginners|शुरुआती शतरंज|नवशिक्यांसाठी बुद्धिबळ;Foldable board with a first-moves guide|पहली चालों की गाइड वाला बोर्ड|पहिल्या चालींच्या मार्गदर्शकासह पट
+19;🔢;6+;Puzzles;349;449;y;maths,memory;Math Flash Cards|गणित फ्लैश कार्ड|गणित फ्लॅश कार्ड;100 cards make tables a game|100 कार्ड से पहाड़े बनें खेल|100 कार्डांनी पाढे बनतात खेळ
+20;🌍;6+;Science;1099;1399;m;geo,science;Globe & World Atlas|ग्लोब और विश्व एटलस|ग्लोब आणि जागतिक अॅटलस;Light-up globe with country cards|देशों के कार्ड वाला जगमगाता ग्लोब|देशांच्या कार्डांसह उजळणारा ग्लोब`;
+var D={};RAW.split("\n").forEach(function(l){var i=l.indexOf("=");if(i>0)D[l.slice(0,i)]=l.slice(i+1).split("|")});
+var CL={c:"var(--coral)",m:"var(--mint)",s:"var(--sky)",y:"var(--yellow)"};
+var P=TOYS.split("\n").map(function(l){var a=l.split(";");return{id:+a[0],e:a[1],a:a[2],c:a[3],p:+a[4],m:+a[5],k:CL[a[6]],s:a[7].split(","),n:a[8].split("|"),d:a[9].split("|")}});
+var S={user:null,users:{},cart:{},wish:{},orders:[],coupon:false,lang:"en",sold:{},msgs:[]};
+try{var raw=localStorage.getItem("tt-store2");if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem("tt-store2",JSON.stringify(S))}catch(e){}}
+var F={age:"all",cat:"all",sort:"pop",q:""},mode="login",otp=false,vw={},tt;
+var $=function(s){return document.querySelector(s)};
+var R=function(n){return"₹"+n.toLocaleString("en-IN")};
+var by=function(id){return P.filter(function(p){return p.id==id})[0]};
+var keys=function(o){return Object.keys(o).filter(function(k){return o[k]})};
+var L=function(){return{en:0,hi:1,mr:2}[S.lang]||0};
+var t=function(k){var a=D[k];return a?a[L()]:k};
+var nm=function(p){return p.n[L()]};
+var app=$("#app");
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function toast(m){var e=$("#toast");e.textContent=m;e.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){e.classList.remove("on")},1700)}
+function dt(i){return new Date(i).toLocaleDateString({en:"en-IN",hi:"hi-IN",mr:"mr-IN"}[S.lang],{day:"numeric",month:"short"})}
+function go(h){location.hash="#"+h}
+function count(){var n=0;keys(S.cart).forEach(function(k){n+=S.cart[k]});$("#cc").textContent=n;$("#wc").textContent=keys(S.wish).length;
+  $("#ab").innerHTML="👤 "+(S.user?esc(S.user.name.split(" ")[0]):t("login"));
+  document.documentElement.lang=S.lang;$("#q").placeholder=t("search");$("#q").setAttribute("aria-label",t("search"));$("#wb").setAttribute("aria-label",t("saved"));$("#cb").setAttribute("aria-label",t("cart"));$("#lang").value=S.lang;$("#ft").innerHTML='<div class="fl">'+nl()+'</div>'+esc(t("safe"));$("#nv").innerHTML=nl();$("#mb").setAttribute("aria-label",t("m_home"))}
+function art(p,v){var e=p.e,f='fill="#fff" fill-opacity=".35"',s='<svg viewBox="0 0 200 150" role="img" aria-label="'+esc(nm(p))+'">';
+  if(v===0)s+='<circle cx="35" cy="30" r="30" '+f+'/><circle cx="172" cy="118" r="42" '+f+'/><ellipse cx="100" cy="124" rx="38" ry="7" fill="#000" fill-opacity=".18"/><text x="100" y="100" font-size="80" text-anchor="middle">'+e+'</text>';
+  else if(v===1){[[30,35,-20],[165,30,15],[25,120,10],[170,122,-15],[100,24,0]].forEach(function(o){s+='<text x="'+o[0]+'" y="'+o[1]+'" font-size="26" opacity=".45" text-anchor="middle" transform="rotate('+o[2]+' '+o[0]+' '+o[1]+')">'+e+'</text>'});s+='<text x="100" y="102" font-size="70" text-anchor="middle">'+e+'</text>'}
+  else s+='<rect x="10" y="12" width="104" height="30" rx="15" fill="#262839"/><text x="62" y="32" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" font-family="Poppins,Noto Sans Devanagari,sans-serif">'+t("ages")+' '+p.a.replace("-","–")+'</text><text x="130" y="108" font-size="76" text-anchor="middle">'+e+'</text>';
+  return s+'</svg>'}
+function chips(name,vals){return vals.map(function(v){return'<button class="chip" data-act="f" data-k="'+name+'" data-v="'+v[0]+'" aria-pressed="'+(F[name]===v[0])+'">'+v[1]+'</button>'}).join("")}
+function shop(){
+  var l=P.filter(function(p){return(F.age==="all"||p.a===F.age)&&(F.cat==="all"||p.c===F.cat)&&(p.n.join(" ")+" "+p.c+" "+p.s.join(" ")).toLowerCase().indexOf(F.q)>-1});
+  if(F.sort==="lo")l.sort(function(a,b){return a.p-b.p});if(F.sort==="hi")l.sort(function(a,b){return b.p-a.p});
+  var hero=(F.age==="all"&&F.cat==="all"&&!F.q)?'<section class="hero"><div class="t"><h1>'+t("hero_h")+'</h1><p>'+t("hero_p")+'</p><a class="cta" href="#/" data-act="jump">'+t("shop")+'</a></div><div class="sun"><div class="blk"><span style="background:var(--mint)">1</span><span style="background:var(--coral)">A</span><span style="background:var(--sky)">B</span></div></div></section><div class="trust"><span>'+t("t1")+'</span><span>'+t("t2")+'</span><span>'+t("t3")+'</span><span>'+t("t4")+'</span></div>':"";
+  app.innerHTML=hero+'<div class="filters" id="shop"><h2>'+t("all_toys")+' ('+l.length+')</h2>'+chips("age",[["all",t("all_ages")],["0-2","0–2"],["3-5","3–5"],["6+","6+"]])+
+  '<select id="cat" aria-label="'+t("all_cats")+'"><option value="all">'+t("all_cats")+'</option>'+["Baby","Blocks","Puzzles","Science","Creative"].map(function(c){return'<option value="'+c+'"'+(F.cat===c?" selected":"")+'>'+t("c_"+c)+'</option>'}).join("")+'</select>'+
+  '<select id="sort" aria-label="Sort"><option value="pop">'+t("pop")+'</option><option value="lo"'+(F.sort==="lo"?" selected":"")+'>'+t("lo")+'</option><option value="hi"'+(F.sort==="hi"?" selected":"")+'>'+t("hi")+'</option></select></div>'+
+  '<div class="grid">'+(l.length?l.map(card).join(""):'<p class="empty">'+t("none")+'</p>')+'</div>';
+  $("#cat").onchange=function(e){F.cat=e.target.value;shop()};$("#sort").onchange=function(e){F.sort=e.target.value;shop()}}
+function vid(p){return'<div class="vid" id="vd" style="background:'+p.k+'"><div class="toy">'+p.e+'</div><div class="caps"><span>'+t("st1")+'</span><span>'+t("st2")+'</span><span>'+t("st3")+'</span></div><div class="prog"><i></i></div></div>'}
+function totals(){var sub=0;keys(S.cart).forEach(function(k){sub+=by(k).p*S.cart[k]});var d=S.coupon?Math.round(sub*.1):0,sh=sub-d>=999||!sub?0:49;return{sub:sub,d:d,sh:sh,t:sub-d+sh}}
+function summary(){var x=totals();return'<div class="sum"><div><span>'+t("sub")+'</span><span>'+R(x.sub)+'</span></div>'+(x.d?'<div><span>WELCOME10</span><span>−'+R(x.d)+'</span></div>':"")+'<div><span>'+t("deliv")+'</span><span>'+(x.sh?R(x.sh):t("freew"))+'</span></div><div class="tot"><span>'+t("total")+'</span><span>'+R(x.t)+'</span></div></div>'}
+function cart(){var ks=keys(S.cart);
+  if(!ks.length){app.innerHTML='<div class="auth"><div class="ok">🛒</div><h2>'+t("empty")+'</h2><p><a class="cta" href="#/">'+t("browse")+'</a></p></div>';return}
+  app.innerHTML='<h2 style="margin-top:24px">'+t("yourcart")+'</h2><div class="two"><div class="panel">'+ks.map(function(k){var p=by(k),q=S.cart[k];return'<div class="line"><div class="th" style="background:'+p.k+'">'+p.e+'</div><div class="nm"><a href="#/p/'+p.id+'">'+nm(p)+'</a><div class="muted" style="margin:0">'+R(p.p)+'</div></div><div class="qty"><button data-act="dec" data-id="'+p.id+'" aria-label="−">−</button><b>'+q+'</b><button data-act="inc" data-id="'+p.id+'" aria-label="+">+</button></div><button class="ghost" style="padding:4px 12px" data-act="rm" data-id="'+p.id+'" aria-label="✕">✕</button></div>'}).join("")+'</div><div class="panel"><div class="form"><label>'+t("coupon")+'<span style="display:flex;gap:8px"><input class="in" id="cp" placeholder="WELCOME10" value="'+(S.coupon?"WELCOME10":"")+'"><button class="ghost" data-act="coupon">'+t("apply")+'</button></span></label></div>'+summary()+'<p><a class="cta" style="width:100%" href="#/checkout">'+t("checkout")+'</a></p></div></div>'}
+function done(id){var o=S.orders.filter(function(x){return x.id===id})[0];if(!o)return go("/");
+  app.innerHTML='<div class="auth"><div class="ok">🎉</div><h2>'+t("placed")+'</h2><p><b>'+o.id+'</b> · '+R(o.t)+'</p><p class="muted">'+t("arrive")+' '+dt(o.eta)+' · '+esc(o.pc)+' · '+t("p_"+o.pm)+'</p><a class="cta" href="#/">'+t("keep")+'</a> <a class="ghost" href="#/track/'+o.id+'">'+t("view")+'</a> <a class="ghost" href="#/orders">'+t("vieworders")+'</a></div>'}
+var BASE=[12,8,3,15,0,6,2,9,20,4,11,7,5,14,1,18,10,0,13,6],poll;
+var NAV=[["/","m_home"],["/wishlist","m_wish"],["/orders","m_orders"],["/profile","m_prof"],["/about","m_about"],["/contact","m_contact"],["/faq","m_faq"],["/privacy","m_priv"],["/terms","m_terms"]];
+var LEG={priv:["This is a demo prototype. Your cart, wishlist, profile, messages and orders are stored only in your own browser (localStorage). Nothing is sent to a server.","Demo passwords are only lightly scrambled in your browser and are NOT secure. Never use a real password, card number or other sensitive detail.","If you allow the Tiny Helper chatbot to use AI, your chat messages and the toy list are sent to an AI service to write replies.","You can erase everything by clearing this site's data in your browser.","This text is a simple starting point and is not legal advice. Have it reviewed before real use."],
+terms:["Tiny Turing is a demonstration store. Products, prices, stock, reviews and order tracking are sample data.","No real orders, payments or deliveries happen on this site.","Toys are meant for the age groups shown. Adult supervision is recommended for young children.","Delivery, returns and cancellations follow the FAQ page and may change.","These terms are a simple starting point and are not legal advice. Have them reviewed before real use."]};
+var stk=function(p){return Math.max(0,BASE[p.id-1]-(S.sold[p.id]||0))};
+var rt=function(p){return(4+((p.id*7)%10)/10).toFixed(1)},cnt=function(p){return 18+p.id*9};
+var stars=function(n){return"★★★★★".slice(0,n)+"☆☆☆☆☆".slice(0,5-n)};
+function stl(p){var n=stk(p);return n===0?'<span class="st o">'+t("s_out")+'</span>':n<=3?'<span class="st l">'+t("s_low").replace("{n}",n)+'</span>':'<span class="st i">'+t("s_in")+'</span>'}
+function nl(){return NAV.map(function(a){return'<a href="#'+a[0]+'">'+t(a[1])+'</a>'}).join("")}
+function hash(p,salt){var x=(salt||"tt-demo:")+p;if(window.crypto&&crypto.subtle)return crypto.subtle.digest("SHA-256",new TextEncoder().encode(x)).then(function(b){return Array.from(new Uint8Array(b)).map(function(v){return v.toString(16).padStart(2,"0")}).join("")});var h=0;for(var i=0;i<x.length;i++)h=(h*31+x.charCodeAt(i))|0;return Promise.resolve("w"+h)}
+function mine(){return S.orders.filter(function(o){return!o.u||(S.user&&o.u===S.user.id)})}
+function stg(o){if(o.x)return"x";var m=(Date.now()-new Date(o.date))/6e4;return m<1?0:m<3?1:m<6?2:m<10?3:4}
+function need(){if(S.user)return false;toast(t("tlog"));mode="login";go("/login");return true}
+function dtt(i){return new Date(i).toLocaleString({en:"en-IN",hi:"hi-IN",mr:"mr-IN"}[S.lang],{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
+function card(p){var n=stk(p);return'<article class="card"><a href="#/p/'+p.id+'"><div class="pic" style="background:'+p.k+'">'+art(p,0)+'<button class="heart" data-act="heart" data-id="'+p.id+'" aria-pressed="'+!!S.wish[p.id]+'" aria-label="'+t("save")+'">'+(S.wish[p.id]?"♥":"♡")+'</button></div><h3>'+nm(p)+'</h3></a><p class="muted">★ '+rt(p)+' ('+cnt(p)+') · '+t("ages")+' '+p.a.replace("-","–")+'</p><div class="row"><span class="price">'+R(p.p)+'<s>'+R(p.m)+'</s></span>'+(n?'<button class="add" data-act="add" data-id="'+p.id+'">'+t("add")+'</button>':'<span class="st o">'+t("s_out")+'</span>')+'</div></article>'}
+function detail(id){var p=by(id);if(!p)return go("/");var v=vw[id]||0,n=stk(p),r=+rt(p);
+  var main=v===3?vid(p):'<div class="pic" style="background:'+p.k+'">'+art(p,v)+'</div>';
+  var th=[0,1,2].map(function(i){return'<button class="tb" style="background:'+p.k+'" data-act="view" data-id="'+id+'" data-v="'+i+'" aria-pressed="'+(v===i)+'" aria-label="Photo '+(i+1)+'">'+art(p,i)+'</button>'}).join("")+'<button class="tb vb" data-act="view" data-id="'+id+'" data-v="3" aria-pressed="'+(v===3)+'">▶ '+t("vid")+'</button>';
+  var rel=P.filter(function(x){return x.id!==p.id&&x.c===p.c}).concat(P.filter(function(x){return x.id!==p.id&&x.c!==p.c&&x.a===p.a})).slice(0,4);
+  var rvs=[0,1,2].map(function(i){return'<div class="rv"><b>'+["Anita","Rahul","Sneha"][(p.id+i)%3]+'</b> <span class="muted" style="margin:0">'+stars(i===1?4:5)+'</span><p style="margin:4px 0 0">'+t("rv"+((p.id+i)%3+1))+'</p></div>'}).join("");
+  app.innerHTML='<div class="pd"><div>'+main+'<div class="thumbs">'+th+'</div>'+(v===3?'<p><button class="ghost" data-act="pz">'+t("pause")+'</button> ':'<p>')+'<a class="ghost" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query='+encodeURIComponent(p.n[0]+" toy for kids")+'">'+t("yt")+'</a></p></div><div><a class="muted" href="#/">'+t("back")+'</a><h1>'+nm(p)+'</h1><p class="muted">'+t("ages")+' '+p.a.replace("-","–")+' · '+t("c_"+p.c)+'</p><p><span aria-label="'+r+'/5">'+stars(Math.round(r))+'</span> '+r+' ('+cnt(p)+') '+stl(p)+' <span class="muted" style="margin:0">· '+t("s_note")+'</span></p><div class="big">'+R(p.p)+' <span class="muted"><s>'+R(p.m)+'</s> · '+Math.round(100-p.p*100/p.m)+'% '+t("off")+'</span></div><p>'+p.d[L()]+'</p><p>'+p.s.map(function(s){return'<span class="tag">'+t("k_"+s)+'</span>'}).join("")+'</p><p>'+(n?'<button class="cta" data-act="add" data-id="'+id+'">'+t("addcart")+'</button> <button class="ghost" data-act="buy" data-id="'+id+'">'+t("buy")+'</button>':'<button class="cta" disabled>'+t("s_out")+'</button>')+' <button class="ghost" data-act="heart" data-id="'+id+'" aria-pressed="'+!!S.wish[id]+'">'+(S.wish[id]?"♥ "+t("savedb"):"♡ "+t("save"))+'</button></p><p class="muted">'+t("free")+'</p></div></div><h2>'+t("rev")+'</h2>'+rvs+'<h2 style="margin-top:24px">'+t("more")+'</h2><div class="grid" style="margin-top:14px">'+rel.map(card).join("")+'</div>'}
+function setQty(id,d){var mx=Math.min(10,stk(by(id))),q=(S.cart[id]||0)+d;
+  if(d>0&&mx<1){toast(t("s_out"));return false}
+  if(q>mx){q=mx;toast(t("s_low").replace("{n}",mx));if(d>0&&(S.cart[id]||0)>=mx)return false}
+  if(q<1)delete S.cart[id];else S.cart[id]=q;save();count();return true}
+function checkout(){
+  if(!keys(S.cart).length)return go("/cart");if(need())return;var u=S.user;
+  app.innerHTML='<h2 style="margin-top:24px">'+t("checkout")+'</h2><div class="two"><form class="panel form" id="co" novalidate><label>'+t("fname")+'<input class="in" name="n" required value="'+esc(u.name)+'"></label><label>'+t("phone")+'<input class="in" name="ph" required inputmode="numeric" value="'+esc(u.ph||"")+'"></label><label>'+t("addr")+'<input class="in" name="ad" required value="'+esc(u.ad||"")+'"></label><label>'+t("pin")+'<input class="in" name="pc" required inputmode="numeric"></label><label>'+t("pay")+'<select name="pm" class="in"><option value="upi">'+t("p_upi")+'</option><option value="card">'+t("p_card")+'</option><option value="cod">'+t("p_cod")+'</option></select></label><p class="muted" style="margin:0">'+t("demopay")+'</p><p class="err" id="ce" role="alert"></p><button class="cta" type="button" data-act="fs">'+t("place")+'</button></form><div class="panel"><h3>'+t("summary")+'</h3>'+keys(S.cart).map(function(k){return'<div class="muted" style="margin:6px 0">'+by(k).e+' '+nm(by(k))+' × '+S.cart[k]+'</div>'}).join("")+summary()+'</div></div>'}
+function orow(o){return'<div class="line"><div class="nm"><b>'+o.id+'</b> <span class="tag" style="margin:0">'+t("st_"+stg(o))+'</span><div class="muted" style="margin:0">'+dt(o.date)+' · '+R(o.t)+'</div></div><a class="ghost" href="#/track/'+o.id+'">'+t("view")+'</a></div>'}
+function orders(){if(need())return;var l=mine();
+  app.innerHTML='<h2 style="margin-top:24px">'+t("m_orders")+'</h2>'+(l.length?'<div class="panel">'+l.map(orow).join("")+'</div>':'<div class="auth"><div class="ok">📦</div><p class="muted">'+t("oempty")+'</p><a class="cta" href="#/">'+t("browse")+'</a></div>')}
+function track(id){if(need())return;var o=mine().filter(function(x){return x.id===id})[0];if(!o)return go("/orders");var s=stg(o);
+  app.innerHTML='<div class="doc"><a class="muted" href="#/orders">← '+t("m_orders")+'</a><h1>'+t("tdet")+' '+o.id+'</h1>'+(s==="x"?'<p><span class="st o">'+t("st_x")+'</span></p>':'<ol class="tl">'+[0,1,2,3,4].map(function(i){return'<li class="'+(i<=s?"on":"")+(i===s?" cur":"")+'">'+t("st_"+i)+'</li>'}).join("")+'</ol>')+'<p class="muted">'+t("simnote")+'</p><div class="panel"><p>'+t("odate")+': <b>'+dtt(o.date)+'</b></p><p>'+t("pay")+': <b>'+t("p_"+o.pm)+'</b></p>'+(o.ad?'<p>'+esc(o.n)+', '+esc(o.ad)+', '+esc(o.pc)+' · '+esc(o.ph)+'</p>':"")+o.items.map(function(i){var p=by(i[0]);return'<div class="line"><div class="th" style="background:'+p.k+'">'+p.e+'</div><div class="nm">'+nm(p)+' × '+i[1]+'</div><b>'+R(p.p*i[1])+'</b></div>'}).join("")+'<p class="big">'+t("total")+': '+R(o.t)+'</p>'+(s===0||s===1?'<button class="ghost" data-act="cancel" data-id="'+o.id+'">'+t("cancel")+'</button>':"")+'</div></div>';
+  poll=setInterval(function(){if(location.hash==="#/track/"+id)track(id)},20000)}
+function wl(){var w=keys(S.wish);app.innerHTML='<h2 style="margin-top:24px">'+t("m_wish")+' ('+w.length+')</h2><div class="grid" style="margin-top:14px">'+(w.length?w.map(function(k){return card(by(k))}).join(""):'<div class="empty"><div class="ok">♡</div><p>'+t("wempty")+'</p><a class="cta" href="#/">'+t("browse")+'</a></div>')+'</div>'}
+function profile(){if(need())return;var u=S.user,l=mine().slice(0,3),w=keys(S.wish);
+  app.innerHTML='<h2 style="margin-top:24px">'+t("m_prof")+'</h2><div class="two"><form class="panel form" id="pf" novalidate><p class="muted" style="margin:0">'+t("acct")+': <b>'+esc(u.id)+'</b></p><label>'+t("fname")+'<input class="in" name="n" required value="'+esc(u.name)+'"></label><label>'+t("phone")+'<input class="in" name="ph" inputmode="numeric" value="'+esc(u.ph||"")+'"></label><label>'+t("addr")+'<input class="in" name="ad" value="'+esc(u.ad||"")+'"></label><button class="cta" type="button" data-act="fs">'+t("saveprof")+'</button><button type="button" class="ghost" data-act="logout">'+t("logout")+'</button></form><div class="panel"><h3>'+t("recent")+'</h3>'+(l.length?l.map(orow).join(""):'<p class="muted">'+t("oempty")+'</p>')+'<p><a class="ghost" href="#/orders">'+t("m_orders")+'</a></p></div></div><h2>'+t("m_wish")+' ('+w.length+')</h2><div class="grid" style="margin-top:14px">'+(w.length?w.map(function(k){return card(by(k))}).join(""):'<p class="empty">'+t("wempty")+'</p>')+'</div>'}
+function faq(){var h="";for(var i=1;i<8;i++)h+='<details><summary>'+t("q"+i)+'</summary><p>'+t("a"+i)+'</p></details>';app.innerHTML='<div class="doc"><h1>'+t("faq_t")+'</h1>'+h+'</div>'}
+function legal(k){app.innerHTML='<div class="doc"><h1>'+t(k==="priv"?"m_priv":"m_terms")+'</h1><ul>'+LEG[k].map(function(x){return'<li>'+x+'</li>'}).join("")+'</ul></div>'}
+function route(){clearInterval(poll);var h=location.hash.slice(1)||"/",m=h.split("/");window.scrollTo(0,0);document.body.classList.toggle("authpage",h==="/login");
+  var pg={"/login":auth,"/cart":cart,"/checkout":checkout,"/orders":orders,"/profile":profile,"/wishlist":wl,"/about":about,"/contact":contact,"/faq":faq,"/privacy":function(){legal("priv")},"/terms":function(){legal("terms")}};
+  if(pg[h])pg[h]();else if(m[1]==="p")detail(m[2]);else if(m[1]==="track")track(m[2]);else if(m[1]==="done")done(m[2]);else shop();count()}
+function rnd(){var a=new Uint8Array(8);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(a);else for(var i=0;i<8;i++)a[i]=Math.random()*256;return Array.from(a).map(function(v){return v.toString(16).padStart(2,"0")}).join("")+":"}
+function mkpw(pw){var salt=rnd();return hash(pw,salt).then(function(h){return{pw:h,salt:salt}})}
+function cbox(){return'<div class="panel cbox"><h3>'+t("ph_h")+'</h3><p><a class="tel" href="tel:+917020421821">7020421821</a></p><p><a class="ghost" href="https://wa.me/917020421821" target="_blank" rel="noopener">'+t("wa")+'</a></p></div>'}
+function auth(){var su=mode==="signup",rs=mode==="reset",lg=["en","hi","mr"].map(function(l){return'<button class="chip" data-act="lang" data-v="'+l+'" aria-pressed="'+(S.lang===l)+'">'+{en:"EN",hi:"हिं",mr:"मरा"}[l]+'</button>'}).join(""),pwf=otp&&!rs&&!su?'placeholder="'+t("otpph")+'" inputmode="numeric" autocomplete="one-time-code"':'type="password" placeholder="'+t(rs?"newpw":"pw")+'" autocomplete="'+(su||rs?"new-password":"current-password")+'"';
+  app.innerHTML='<div class="lg"><div class="langs">'+lg+'</div><div class="lgl"><div class="art"><div class="sunl"></div><b class="bk" style="left:96px;top:46px;background:var(--mint)">1</b><b class="bk" style="left:56px;top:126px;background:var(--coral)">A</b><b class="bk" style="left:128px;top:136px;background:var(--sky)">B</b><i class="face" style="left:0;top:136px;background:linear-gradient(#6b4226 0 32%,#ffe0c2 32%)"></i><i class="face" style="left:236px;top:150px;background:linear-gradient(#262839 0 32%,#c68b5a 32%)"></i><span class="dec" style="left:24px;top:42px">⭐</span><span class="dec" style="left:250px;top:18px">🚀</span><span class="dec" style="left:208px;top:100px;font-size:20px">🧩</span></div><h2>'+t("hero_h")+'</h2><p class="muted" style="max-width:30ch;margin:8px auto 0;font-size:14px">'+t("left_p")+'</p></div>'+
+  '<div class="lgr"><div class="logo"><i>🧠</i>Tiny <b>Turing</b></div><h1>'+(rs?t("reset_t"):su?t("join"):t("welcome"))+'</h1><p class="muted" style="margin:4px 4px 16px;font-size:14px">'+(su?t("sub_su"):t("sub_login"))+'</p>'+
+  (rs?'<p><a class="muted" href="#/login" data-act="backlogin"><u>'+t("backlogin")+'</u></a></p>':'<div class="tabs"><button data-act="mode" data-v="login" aria-pressed="'+!su+'">'+t("login")+'</button><button data-act="mode" data-v="signup" aria-pressed="'+su+'">'+t("signup")+'</button></div><div class="soc"><button class="ghost" data-act="social" data-v="Google"><b style="color:#4285f4">G</b> Google</button><button class="ghost" data-act="social" data-v="Apple"> Apple</button></div><div class="or"><span>'+t("or")+'</span></div>')+
+  '<form class="form" id="au" novalidate>'+(su?'<div class="fld"><span>🙂</span><input class="in" name="n" placeholder="'+t("yname")+'" autocomplete="name"></div>':"")+'<div class="fld"><span>✉️</span><input class="in" name="ident" placeholder="'+t("emailph")+'" autocomplete="username"></div>'+(rs?'<div class="fld"><span>🔑</span><input class="in" name="code" inputmode="numeric" placeholder="'+t("code")+'"></div>':"")+'<div class="fld"><span>🔒</span><input class="in" id="pw" name="pw" '+pwf+'>'+(otp&&!rs&&!su?"":'<button type="button" class="eye" data-act="eye" aria-label="Show password">👁</button>')+'</div><p class="muted" style="margin:0;font-size:12px">'+t("demopw")+' '+t("demoauth")+'</p><p class="err" id="er" role="alert"></p>'+
+  (su||rs?"":'<div class="lnks"><a href="#/login" data-act="otp"><u>'+(otp?t("usepw"):t("useotp"))+'</u></a><a href="#/login" data-act="forgot"><u>'+t("forgot")+'</u></a></div>')+'<button class="cta" type="button" data-act="fs">'+(rs?t("reset_b"):su?t("create"):t("login"))+'</button></form><p class="muted" style="text-align:center;margin:16px 0 0;font-size:12px">🛡️ '+t("safe")+' · <a href="#/"><u>'+t("guest")+'</u></a></p></div></div>'}
+function about(){app.innerHTML='<div class="doc"><h1>'+t("ab_t")+'</h1><p class="muted">Tiny Turing – Learning Toys for Curious Kids</p><div class="sun" style="min-height:170px"><div class="blk"><span style="background:var(--mint)">1</span><span style="background:var(--coral)">A</span><span style="background:var(--sky)">B</span></div></div><p>'+t("ab_1")+'</p><p>'+t("ab_how")+'</p><p>'+t("ab_2")+'</p><p>'+t("ab_types")+'</p><p>'+t("ab_val")+'</p><p>'+t("owner")+': <b>Misbah Riyaj Mulla</b></p>'+cbox()+'<p class="muted">'+t("ab_3")+'</p><a class="cta" href="#/">'+t("shop")+'</a></div>'}
+function contact(){app.innerHTML='<div class="doc"><h1>'+t("c_title")+'</h1>'+cbox()+'<p class="muted">'+t("c_note")+'</p><form class="panel form" id="ct" novalidate><label>'+t("fname")+'<input class="in" name="n" autocomplete="name"></label><label>'+t("c_email")+'<input class="in" name="e" type="email" autocomplete="email"></label><label>'+t("c_subj")+'<input class="in" name="s"></label><label>'+t("c_msg")+'<textarea class="in" name="m" rows="4"></textarea></label><p id="cm" role="status" class="err"></p><button class="cta" type="button" data-act="fs">'+t("c_send")+'</button></form></div>'}
+window.addEventListener("hashchange",route);
+document.addEventListener("click",function(e){var nv=$("#nv");if(nv&&!nv.hidden&&!e.target.closest("#mb")){nv.hidden=true;$("#mb").setAttribute("aria-expanded","false")}var b=e.target.closest("[data-act]");if(!b)return;var a=b.dataset.act,id=b.dataset.id;
+  if(a==="jump"){e.preventDefault();$("#shop").scrollIntoView({behavior:"smooth"});return}
+  if(b.closest("a"))e.preventDefault();
+  if(a==="fs"){handleForm(b.closest("form"))}
+  else if(a==="heart"){S.wish[id]=!S.wish[id];save();route();toast(S.wish[id]?t("tsv"):t("trm"))}
+  else if(a==="add"){if(setQty(id,1))toast(t("tadd"))}
+  else if(a==="buy"){if(setQty(id,1))go("/cart")}
+  else if(a==="inc"||a==="dec"){setQty(id,a==="inc"?1:-1);cart()}
+  else if(a==="rm"){delete S.cart[id];save();cart();count()}
+  else if(a==="coupon"){S.coupon=$("#cp").value.trim().toUpperCase()==="WELCOME10";save();toast(S.coupon?t("tok"):t("tbad"));cart()}
+  else if(a==="f"){F[b.dataset.k]=b.dataset.v;shop()}
+  else if(a==="view"){vw[id]=+b.dataset.v;detail(id)}
+  else if(a==="pz"){$("#vd").classList.toggle("pz")}
+  else if(a==="lang"){S.lang=b.dataset.v;save();route();botUI()}
+  else if(a==="mode"){mode=b.dataset.v;otp=false;auth()}
+  else if(a==="eye"){var i=$("#pw");i.type=i.type==="password"?"text":"password"}
+  else if(a==="otp"){otp=!otp;auth()}
+  else if(a==="forgot"){mode="reset";otp=false;auth()}
+  else if(a==="social"){toast(t("tsoc"))}
+  else if(a==="backlogin"){mode="login";auth()}
+  else if(a==="cancel"){var o=mine().filter(function(x){return x.id===id})[0];if(o&&!o.x){o.x=true;o.items.forEach(function(i){S.sold[i[0]]=Math.max(0,(S.sold[i[0]]||0)-i[1])});save();track(id);toast(t("st_x"))}}
+  else if(a==="bot"){BOT.open=!BOT.open;botUI()}
+  else if(a==="bq"){bsend(t(b.dataset.k))}
+  else if(a==="bsend"){bsend($("#bi").value)}
+  else if(a==="badd"){if(setQty(id,1))toast(t("tadd"))}
+  else if(a==="logout"){S.user=null;save();count();toast(t("tout"));go("/")}
+});
+function handleForm(f){if(!f)return;var d=new FormData(f),fid=f.getAttribute("id");
+  if(fid==="au"){var id=d.get("ident").trim().toLowerCase().replace(/[\s-]/g,""),pw=d.get("pw")||"",er=$("#er"),nmv=(d.get("n")||"").trim(),fail=function(k){er.textContent=t(k)};
+    if(mode==="signup"&&nmv.length<2)return fail("e_name");
+    if(!/^\S+@\S+\.\S+$/.test(id)&&!/^\d{10}$/.test(id))return fail("e_id");
+    var fin=function(msg){mode="login";otp=false;var u=S.users[id];S.user={id:id,name:u.name,ph:u.ph||"",ad:u.ad||""};save();count();toast(msg==="new"?t("tcreated"):t("twel")+", "+u.name.split(" ")[0]);go(keys(S.cart).length?"/cart":"/")};
+    if(mode==="reset"){if(!S.users[id])return fail("e_noacc");if((d.get("code")||"").trim()!=="1234")return fail("e_code");if(pw.length<6)return fail("e_pw");
+      return mkpw(pw).then(function(r){Object.assign(S.users[id],r);save();mode="login";otp=false;auth();toast(t("tresetok"))})}
+    if(otp&&mode==="login"){if(!S.users[id])return fail("e_noacc");if(pw!=="1234")return fail("e_otp");return fin("old")}
+    if(pw.length<6)return fail("e_pw");
+    var u=S.users[id];
+    if(mode==="signup"){if(u)return fail("e_ex");return mkpw(pw).then(function(r){S.users[id]={pw:r.pw,salt:r.salt,name:nmv};fin("new")})}
+    if(!u||!u.pw)return fail("e_bad");
+    hash(pw,u.salt).then(function(h){if(u.pw!==h&&u.pw!==pw)return fail("e_bad");u.pw=h;fin("old")})}
+  if(fid==="co"){var ce=$("#ce"),nv2=d.get("n").trim(),ph=d.get("ph").trim(),ad=d.get("ad").trim(),pc=d.get("pc").trim();
+    if(nv2.length<2||!/^\d{10}$/.test(ph)||ad.length<8||!/^\d{6}$/.test(pc)){ce.textContent=t("e_form");return}
+    var bad=keys(S.cart).filter(function(k){return S.cart[k]>stk(by(k))});
+    if(bad.length){ce.textContent=nm(by(bad[0]))+": "+t("s_low").replace("{n}",stk(by(bad[0])));return}
+    var bt=f.querySelector("[data-act=fs]");bt.disabled=true;bt.textContent=t("placing");
+    var x=totals(),n=new Date(),oid="TT"+Math.floor(10000+Math.random()*89999),it=keys(S.cart).map(function(k){return[+k,S.cart[k]]}),now=n.toISOString(),pm=d.get("pm");n.setDate(n.getDate()+4);var eta=n.toISOString();
+    setTimeout(function(){it.forEach(function(i){S.sold[i[0]]=(S.sold[i[0]]||0)+i[1]});S.orders.unshift({id:oid,u:S.user.id,n:nv2,ph:ph,ad:ad,pc:pc,t:x.t,pm:pm,date:now,eta:eta,items:it});S.user.ph=ph;S.user.ad=ad;if(S.users[S.user.id]){S.users[S.user.id].ph=ph;S.users[S.user.id].ad=ad}S.cart={};S.coupon=false;save();go("/done/"+oid)},700)}
+  if(fid==="ct"){var v={n:d.get("n").trim(),e:d.get("e").trim(),s:d.get("s").trim(),m:d.get("m").trim()},cm=$("#cm");
+    if(v.n.length<2||!/^\S+@\S+\.\S+$/.test(v.e)||v.s.length<3||v.m.length<10){cm.className="err";cm.textContent=t("c_err");return}
+    v.d=new Date().toISOString();S.msgs.push(v);S.msgs=S.msgs.slice(-20);save();f.reset();cm.className="okm";cm.textContent=t("c_ok")}
+  if(fid==="pf"){var ph2=d.get("ph").trim(),n2=d.get("n").trim();if(n2.length<2||(ph2&&!/^\d{10}$/.test(ph2))){toast(t("e_form"));return}
+    S.user.name=n2;S.user.ph=ph2;S.user.ad=d.get("ad").trim();if(S.users[S.user.id])Object.assign(S.users[S.user.id],{name:n2,ph:ph2,ad:S.user.ad});save();count();toast(t("profok"))}
+}
+document.addEventListener("submit",function(e){e.preventDefault();handleForm(e.target)});
+document.addEventListener("keydown",function(e){var el=e.target;if(e.key==="Enter"&&el.tagName==="INPUT"&&el.form){e.preventDefault();handleForm(el.form)}});
+$("#q").oninput=function(e){F.q=e.target.value.toLowerCase();if(location.hash==="#/"||!location.hash)shop();else go("/")};
+$("#wb").onclick=function(){go("/wishlist")};
+$("#mb").onclick=function(){var n=$("#nv");n.hidden=!n.hidden;this.setAttribute("aria-expanded",!n.hidden)};
+$("#cb").onclick=function(){go("/cart")};
+$("#ab").onclick=function(){mode="login";otp=false;go(S.user?"/profile":"/login")};
+$("#lang").onchange=function(e){S.lang=e.target.value;save();route();botUI()};
+var BOT={open:false,msgs:[{r:"b",k:"bot_hi",ids:[]}],busy:false};
+var SKW=[[/math|गणित|गिनती|count/,"maths"],[/science|विज्ञान|सायन्स|experiment/,"science"],[/puzzle|पज़ल|पझल|कोडी/,"Puzzles"],[/music|संगीत/,"music"],[/\bart\b|colou?r|रंग|paint|clay/,"art"],[/letter|alphabet|\babc\b|अक्षर|वर्णमाला/,"letters"],[/robot|coding|रोबोट|कोडिंग/,"code"],[/space|rocket|अंतरिक्ष|अंतराळ|रॉकेट/,"space"],[/chess|logic|तर्क|बुद्धिबळ|शतरंज/,"logic"]];
+function local(q){var s=q.toLowerCase(),n=s.match(/\d+/),num=n?+n[0]:null;
+  if(/order|track|ऑर्डर|ट्रैक|ट्रॅक/.test(s)){var o=mine()[0];return o?{t:t("bot_ord")+": "+o.id+" · "+R(o.t)+" · "+t("st_"+stg(o))+" · "+t("arrive")+" "+dt(o.eta)}:{k:"bot_ord0"}}
+  if(/deliver|ship|return|refund|डिलीवरी|डिलिव्हरी|वापसी|परतावा/.test(s))return{k:"bot_deliv"};
+  if(/coupon|discount|offer|promo|\bcode\b|छूट|कूपन|सूट/.test(s))return{k:"bot_coup"};
+  if(/\bpay|upi|\bcod\b|cash|भुगतान|पेमेंट/.test(s))return{k:"bot_pay"};
+  var age=null,bud=null,sk=null;
+  if(num!==null){if(num>=100)bud=num;else if(num<=12)age=num<=2?"0-2":num<=5?"3-5":"6+"}
+  SKW.forEach(function(w){if(w[0].test(s))sk=w[1]});
+  if(/baby|infant|toddler|newborn|शिशु|बेबी|बाळ/.test(s))age=age||"0-2";
+  if(age||bud||sk){var l=P.filter(function(p){return(!age||p.a===age)&&(!bud||p.p<=bud)&&(!sk||p.s.indexOf(sk)>-1||p.c===sk)});
+    return l.length?{k:"bot_rec",ids:l.slice(0,4).map(function(p){return p.id})}:{k:"bot_none",ids:[1,6,8,13]}}
+  if(/^(hi|hii|hello|hey|नमस्ते|नमस्कार)/.test(s))return{k:"bot_greet"};
+  return{k:"bot_fb"}}
+async function ai(q){
+  var smp=window.claude&&await window.claude.use("sample");if(!smp)return null;
+  var cat=P.map(function(p){return p.id+"|"+p.n[0]+"|age "+p.a+"|"+p.c+"|₹"+p.p+"|"+p.s.join("/")}).join("\n"),
+  hist=BOT.msgs.slice(-6).map(function(m){return(m.r==="u"?"Customer: ":"Bot: ")+(m.k?t(m.k):m.t)}).join("\n"),
+  o=mine()[0]?"Latest order "+mine()[0].id+" total ₹"+mine()[0].t+", status "+D["st_"+stg(mine()[0])][0]+", arrives "+mine()[0].eta.slice(0,10):"No orders yet",
+  pr="You are Tiny Helper, the friendly shop assistant of Tiny Turing, an Indian online store for kids' learning toys. Reply in "+{en:"English",hi:"Hindi (Devanagari)",mr:"Marathi (Devanagari)"}[S.lang]+" unless the customer writes in another language. Keep replies under 60 words, warm and simple. Only recommend toys from the catalog below, by id (max 4). Policies: delivery free over ₹999 else ₹49, about 4 days; 7-day returns; coupon WELCOME10 gives 10% off; payment by UPI, card or cash on delivery. "+o+". Do not invent other facts; if unsure, say the support team can help.\nCatalog (id|name|age|category|price|skills):\n"+cat+"\n\nConversation:\n"+hist+"\nCustomer: "+q+'\n\nRespond ONLY as JSON: {"reply":"text","ids":[ids]}',
+  r=await smp.json(pr,{cache:false,modelTier:"quick"});
+  return{t:String(r.reply||""),ids:(r.ids||[]).filter(function(i){return by(i)}).slice(0,4)}}
+async function bsend(q){q=(q||"").trim();if(!q||BOT.busy)return;var i=$("#bi");if(i)i.value="";
+  BOT.msgs.push({r:"u",t:q});BOT.busy=true;botUI();var res=null;
+  try{res=await ai(q)}catch(e){res=null}
+  if(!res||!res.t)res=local(q);
+  BOT.msgs.push({r:"b",k:res.k,t:res.t,ids:res.ids||[]});BOT.busy=false;botUI()}
+function chipHtml(id){var p=by(id);return'<div class="bp"><a href="#/p/'+id+'">'+p.e+' '+esc(nm(p))+'</a><span>'+R(p.p)+'</span><button data-act="badd" data-id="'+id+'" aria-label="'+t("addcart")+'">+</button></div>'}
+function botUI(){var old=$("#bi"),val=old?old.value:"",foc=old&&document.activeElement===old;
+  var h='<button class="fab" data-act="bot" aria-label="'+t("bot_title")+'">'+(BOT.open?"✕":"💬")+'</button>';
+  if(BOT.open)h+='<div class="bw" role="dialog" aria-label="'+t("bot_title")+'"><div class="bh">🧠 '+t("bot_title")+'</div><div class="bm" id="bm">'+BOT.msgs.map(function(m){return'<div class="m '+(m.r||"b")+'">'+esc(m.k?t(m.k):m.t)+(m.ids&&m.ids.length?m.ids.map(chipHtml).join(""):"")+'</div>'}).join("")+(BOT.busy?'<div class="m b">'+t("bot_think")+'</div>':"")+'</div><div class="bq">'+["bot_q1","bot_q2","bot_q3","bot_q4","bot_q5"].map(function(k){return'<button class="chip" data-act="bq" data-k="'+k+'" aria-pressed="false">'+t(k)+'</button>'}).join("")+'</div><div class="bf"><input class="in" id="bi" placeholder="'+t("bot_ph")+'" aria-label="'+t("bot_ph")+'" value="'+esc(val)+'"><button class="cta" data-act="bsend">'+t("bot_send")+'</button></div></div>';
+  $("#bot").innerHTML=h;var m=$("#bm");if(m)m.scrollTop=m.scrollHeight;if(foc&&$("#bi"))$("#bi").focus()}
+document.addEventListener("keydown",function(e){if(e.target.id==="bi"&&e.key==="Enter"){e.preventDefault();bsend(e.target.value)}});
+botUI();
+if(!location.hash)location.hash=S.user?"#/":"#/login";route();
+
+</script>
+</body>
+</html>
